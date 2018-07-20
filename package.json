@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "noisejs": "^2.1.0",
+    "victor": "^1.1.0",
     "vue": "^2.5.16"
   },
   "devDependencies": {
