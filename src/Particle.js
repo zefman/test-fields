@@ -6,7 +6,7 @@ export class Particle {
     this.pos = this.startingPos.clone()
     this.vel = new Victor(0, 0)
     this.acc = new Victor(0, 0)
-    this.maxspeed = 1.5
+    this.maxspeed = 3
     this.maxLife = 80
     this.life = Math.floor(Math.random() * this.maxLife)
     this.prevPos = [{ x: this.pos.x, y: this.pos.y }]
@@ -19,6 +19,7 @@ export class Particle {
   }
 
   update () {
+    this.vel.multiply(new Victor(0.5, 0.5))
     this.vel.add(this.acc)
     this.limit(this.vel, this.maxspeed)
     // // console.log(this.acc);
@@ -65,16 +66,17 @@ export class Particle {
     const halfLife = this.maxLife / 2
     const alpha = 1 - Math.abs(this.life - halfLife) / halfLife
     ctx.strokeStyle = `rgba(0,0,0, ${alpha})`
+    ctx.lineWidth = 1
 
     ctx.beginPath()
-    ctx.moveTo(this.prevPos[this.prevPos.length - 1].x, this.prevPos[this.prevPos.length - 1].y)
+    ctx.moveTo(this.prevPos[0].x, this.prevPos[0].y)
     ctx.lineTo(this.pos.x, this.pos.y)
     ctx.stroke()
 
-    ctx.beginPath()
-    ctx.arc(this.pos.x, this.pos.y, 2, 0, 2 * Math.PI)
-    // ctx.fill()
-    ctx.stroke()
+    // ctx.beginPath()
+    // ctx.arc(this.pos.x, this.pos.y, 2, 0, 2 * Math.PI)
+    // // ctx.fill()
+    // ctx.stroke()
     this.updatePrev()
     this.edges()
   }
