@@ -8,7 +8,7 @@ import * as topojson from 'topojson'
 import axios from 'axios'
 import { Noise } from 'noisejs'
 import Victor from 'victor'
-import { Particle } from '@/Particle'
+import { Particle } from '@/ParticleD3'
 
 const noise = new Noise(Math.random())
 const particles = []
@@ -25,7 +25,7 @@ export default {
       cols: 0,
       rows: 0,
       field: [],
-      numParticles: 600,
+      numParticles: 10,
       time: 0,
       map: null
     }

@@ -7,7 +7,7 @@
 import { Noise } from 'noisejs'
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
 import Victor from 'victor'
-import { Particle } from '@/ParticleD3'
+import { Particle } from '@/Particle'
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoiam96ZWYtc3RyYXR1bSIsImEiOiJjamp5MGtpZHExNXg2M3dwYTB2OXJkN2N5In0.P20sd8p6-eKDGJEHJwF8OQ'
 
