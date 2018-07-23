@@ -6,13 +6,14 @@
 
 <script>
 import { Noise } from 'noisejs'
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
 import Victor from 'victor'
 import { Particle } from './Particle'
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoiam96ZWYtc3RyYXR1bSIsImEiOiJjamp5MGtpZHExNXg2M3dwYTB2OXJkN2N5In0.P20sd8p6-eKDGJEHJwF8OQ';
+mapboxgl.accessToken = 'pk.eyJ1Ijoiam96ZWYtc3RyYXR1bSIsImEiOiJjamp5MGtpZHExNXg2M3dwYTB2OXJkN2N5In0.P20sd8p6-eKDGJEHJwF8OQ'
 
 const noise = new Noise(Math.random())
+const particles = []
 
 export default {
   name: 'app',
@@ -27,7 +28,6 @@ export default {
       rows: 0,
       field: [],
       numParticles: 600,
-      particles: [],
       time: 0,
       map: null
     }
@@ -44,16 +44,16 @@ export default {
 
     this.map = new mapboxgl.Map({
       container: 'app',
-      style: 'mapbox://styles/jozef-stratum/cjjy0upkm4w4a2rqyy2cwkrnz',
-    });
+      style: 'mapbox://styles/jozef-stratum/cjjy0upkm4w4a2rqyy2cwkrnz'
+    })
 
     this.map.on('load', () => {
       console.log('Loaded map')
-      const bounds = this.map.getBounds();
-      const nw = bounds.getNorthWest();
-      const ne = bounds.getNorthEast();
-      const sw = bounds.getSouthWest();
-      const se = bounds.getSouthEast();
+      const bounds = this.map.getBounds()
+      const nw = bounds.getNorthWest()
+      const ne = bounds.getNorthEast()
+      const sw = bounds.getSouthWest()
+      const se = bounds.getSouthEast()
 
       this.map.addSource('some id', {
         type: 'canvas',
@@ -65,14 +65,14 @@ export default {
           [ne.lng, sw.lat],
           [nw.lng, sw.lat]
         ]
-      });
+      })
 
       this.map.addLayer({
         id: 'canvas',
         source: 'some id',
-        type: 'raster',
+        type: 'raster'
       })
-    });
+    })
   },
   methods: {
     setColRows (scale, width, height) {
@@ -116,7 +116,7 @@ export default {
       //   }
       // }
       // this.ctx.fillStyle = "rgba(255, 255, 255, 1)"
-      this.particles.forEach((particle) => {
+      particles.forEach((particle) => {
         particle.follow(this.field)
         particle.update()
         particle.show(this.ctx)
@@ -132,7 +132,7 @@ export default {
     },
     createParticles () {
       for (let i = 0; i < this.numParticles; i++) {
-        this.particles.push(new Particle(this.width, this.height, this.scale, this.rows, this.cols))
+        particles.push(new Particle(this.width, this.height, this.scale, this.rows, this.cols))
       }
     }
   }

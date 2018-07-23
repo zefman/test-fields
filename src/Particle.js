@@ -9,7 +9,7 @@ export class Particle {
     this.maxspeed = 1.5
     this.maxLife = 80
     this.life = Math.floor(Math.random() * this.maxLife)
-    this.prevPos = [new Victor(0, 0).copy(this.pos)]
+    this.prevPos = [{ x: this.pos.x, y: this.pos.y }]
     this.scl = scale
     this.cols = cols
     this.rows = rows
@@ -82,7 +82,7 @@ export class Particle {
   updatePrev () {
     // this.prevPos.x = this.pos.x
     // this.prevPos.y = this.pos.y
-    this.prevPos.unshift(this.pos.clone())
+    this.prevPos.unshift({ x: this.pos.x, y: this.pos.y })
     if (this.prevPos.length > 10) this.prevPos.length = 10
   }
 
