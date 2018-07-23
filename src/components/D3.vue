@@ -21,11 +21,11 @@ export default {
       ctx: null,
       width: 0,
       height: 0,
-      scale: 2,
+      scale: 3,
       cols: 0,
       rows: 0,
       field: [],
-      numParticles: 10,
+      numParticles: 100,
       time: 0,
       map: null
     }
@@ -40,6 +40,7 @@ export default {
     this.generateField(0)
     console.log(d3)
     const projection = d3.geoOrthographic()
+    // const projection = d3.geoMercator()
       .scale(this.height / 2.1)
       .translate([this.width / 2, this.height / 2])
       .clipAngle(90)
@@ -100,18 +101,31 @@ export default {
           this.ctx.strokeStyle = 'rgba(119,119,119,.5)'
           this.ctx.stroke()
 
-          particles.forEach((particle) => {
-            // const [x, y] = projection([particle.pos.x, particle.pos.y])
+          // particles.forEach((particle) => {
+          //   // const [x, y] = projection([particle.pos.x, particle.pos.y])
+          //   this.ctx.beginPath()
+          //   path({
+          //     type: 'Point',
+          //     coordinates: [
+          //       particle.pos.x,
+          //       particle.pos.y
+          //     ]
+          //   })
+          //   // this.ctx.arc(x, y, 2, 0, 2 * Math.PI)
+          //   this.ctx.fill()
+          // })
+
+          this.field.forEach((field, index) => {
+            const end = new Victor(field.pos.x, field.pos.y).add(field.angleVector)
             this.ctx.beginPath()
             path({
-              type: 'Point',
+              type: 'LineString',
               coordinates: [
-                particle.pos.x,
-                particle.pos.y
+                [field.pos.x, field.pos.y],
+                [end.x, end.y]
               ]
             })
-            // this.ctx.arc(x, y, 2, 0, 2 * Math.PI)
-            this.ctx.fill()
+            this.ctx.stroke()
           })
         })
       })
@@ -127,15 +141,20 @@ export default {
       for (let y = 0; y < this.rows; y++) {
         for (let x = 0; x < this.cols; x++) {
           const index = (x + y * this.cols)
-          // const xOffset = Math.floor(x * this.scale)
+          const xOffset = -180 + Math.floor(x * this.scale)
+          const yOffset = -90 + Math.floor(y * this.scale)
+          const pos = new Victor(xOffset, yOffset)
 
           const angle = noise.simplex3(x / this.scale, y / this.scale, this.time) * 360
           // const speed = Math.abs(noise.simplex3(x / this.scale, y / this.scale, this.time)) * this.scale
-          // const angleVector = new Victor(0, speed)
-          const angleVector = new Victor(0, this.scale)
+          // const angleVector = new Victor(speed, speed)
+          const angleVector = new Victor(this.scale, this.scale)
           angleVector.rotateByDeg(angle)
 
-          this.field[index] = angleVector
+          this.field[index] = {
+            pos,
+            angleVector
+          }
         }
       }
     },
