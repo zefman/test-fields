@@ -11,7 +11,8 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/mapbox', component: MapBox },
-    { path: '/d3', component: d3 }
+    { path: '/d3', component: d3 },
+    { path: '*', redirect: '/mapbox' }
   ]
 })
 
