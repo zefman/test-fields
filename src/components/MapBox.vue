@@ -7,7 +7,7 @@
 import { Noise } from 'noisejs'
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
 import Victor from 'victor'
-import { Particle } from '@/Particle'
+import { Particle } from '@/ParticleD3'
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoiam96ZWYtc3RyYXR1bSIsImEiOiJjamp5MGtpZHExNXg2M3dwYTB2OXJkN2N5In0.P20sd8p6-eKDGJEHJwF8OQ'
 
@@ -49,14 +49,13 @@ export default {
 
     this.map.on('load', () => {
       console.log('Loaded map')
-      this.map.setPitch(30);
-      this.map.setZoom(4);
+      this.map.setPitch(30)
+      this.map.setZoom(4)
       const bounds = this.map.getBounds()
       const nw = bounds.getNorthWest()
       const ne = bounds.getNorthEast()
       const sw = bounds.getSouthWest()
-      const se = bounds.getSouthEast()
-      
+      // const se = bounds.getSouthEast()
 
       this.map.addSource('some id', {
         type: 'canvas',
@@ -73,7 +72,7 @@ export default {
       this.map.addLayer({
         id: 'canvas',
         source: 'some id',
-        type: 'raster',
+        type: 'raster'
       })
     })
   },
@@ -86,8 +85,8 @@ export default {
       for (let y = 0; y < this.rows; y++) {
         for (let x = 0; x < this.cols; x++) {
           const index = (x + y * this.cols)
-          const xOffset = Math.floor(x * this.scale)
-          const yOffset = Math.floor(y * this.scale)
+          // const xOffset = Math.floor(x * this.scale)
+          // const yOffset = Math.floor(y * this.scale)
 
           const angle = noise.simplex3(x / this.scale, y / this.scale, this.time) * 360
           const speed = Math.abs(noise.simplex3(x / this.scale, y / this.scale, this.time)) * this.scale
@@ -130,10 +129,10 @@ export default {
 
       // Fade trails
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.95)'
-      var prev = this.ctx.globalCompositeOperation;
-      this.ctx.globalCompositeOperation = "destination-in";
-      this.ctx.fillRect(0, 0, this.width, this.height);
-      this.ctx.globalCompositeOperation = prev;
+      var prev = this.ctx.globalCompositeOperation
+      this.ctx.globalCompositeOperation = 'destination-in'
+      this.ctx.fillRect(0, 0, this.width, this.height)
+      this.ctx.globalCompositeOperation = prev
 
       // this.ctx.clearRect(0, 0, this.width, this.height)
       // this.ctx.fillStyle="rgba(0,0,0,0.1)"
