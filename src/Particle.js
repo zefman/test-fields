@@ -2,12 +2,14 @@ import Victor from 'victor'
 
 export class Particle {
   constructor (width, height, scale, rows, cols) {
-    this.pos = new Victor(Math.random() * width, Math.random() * height)
+    this.startingPos = new Victor(Math.random() * width, Math.random() * height)
+    this.pos = this.startingPos.clone()
     this.vel = new Victor(0, 0)
     this.acc = new Victor(0, 0)
-    this.maxspeed = 2
-    this.h = 0
-    this.prevPos = new Victor(0, 0).copy(this.pos)
+    this.maxspeed = 1.5
+    this.maxLife = 80
+    this.life = Math.floor(Math.random() * this.maxLife)
+    this.prevPos = [new Victor(0, 0).copy(this.pos)]
     this.scl = scale
     this.cols = cols
     this.rows = rows
@@ -22,6 +24,15 @@ export class Particle {
     // // console.log(this.acc);
     this.pos.add(this.vel)
     this.acc.multiply(new Victor(0, 0))
+
+    this.life++
+
+    if (this.life > this.maxLife) {
+      this.life = 0
+      this.prevPos = []
+      this.pos = this.startingPos.clone()
+      this.updatePrev()
+    }
   }
 
   follow (vectors) {
@@ -51,39 +62,49 @@ export class Particle {
     // line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
     // const currentPos = new Victor(0, 0)
     // currentPos.add(angleVector)
+    const halfLife = this.maxLife / 2
+    const alpha = 1 - Math.abs(this.life - halfLife) / halfLife
+    ctx.strokeStyle = `rgba(0,0,0, ${alpha})`
 
-    // this.ctx.beginPath()
-    // this.ctx.moveTo(xOffset, yOffset)
-    // this.ctx.lineTo(currentPos.x, currentPos.y)
-    // this.ctx.stroke()
-    // this.ctx.fillRect(currentPos.x, currentPos.y, 3, 3);
+    ctx.beginPath()
+    ctx.moveTo(this.prevPos[this.prevPos.length - 1].x, this.prevPos[this.prevPos.length - 1].y)
+    ctx.lineTo(this.pos.x, this.pos.y)
+    ctx.stroke()
 
-    // ctx.fillStyle = 'rgba(0,0,0,1)'
-    ctx.fillRect(this.pos.x, this.pos.y, 0.5, 0.5)
+    ctx.beginPath()
+    ctx.arc(this.pos.x, this.pos.y, 2, 0, 2 * Math.PI)
+    // ctx.fill()
+    ctx.stroke()
     this.updatePrev()
     this.edges()
   }
 
   updatePrev () {
-    this.prevPos.x = this.pos.x
-    this.prevPos.y = this.pos.y
+    // this.prevPos.x = this.pos.x
+    // this.prevPos.y = this.pos.y
+    this.prevPos.unshift(this.pos.clone())
+    if (this.prevPos.length > 10) this.prevPos.length = 10
   }
 
   edges () {
     if (this.pos.x > this.width) {
       this.pos.x = 0
+      this.prevPos = []
       this.updatePrev()
     }
     if (this.pos.x < 0) {
       this.pos.x = this.width
+      this.prevPos = []
       this.updatePrev()
     }
     if (this.pos.y > this.height) {
       this.pos.y = 0
+      this.prevPos = []
       this.updatePrev()
     }
     if (this.pos.y < 0) {
       this.pos.y = this.height
+      this.prevPos = []
       this.updatePrev()
     }
   }
