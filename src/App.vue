@@ -45,15 +45,19 @@ export default {
     this.map = new mapboxgl.Map({
       container: 'app',
       style: 'mapbox://styles/jozef-stratum/cjjy0upkm4w4a2rqyy2cwkrnz'
+      // style: 'mapbox://styles/jozef-stratum/cjjy6fkr67qfr2rmxbcnzhvwv'
     })
 
     this.map.on('load', () => {
       console.log('Loaded map')
+      this.map.setPitch(30);
+      this.map.setZoom(4);
       const bounds = this.map.getBounds()
       const nw = bounds.getNorthWest()
       const ne = bounds.getNorthEast()
       const sw = bounds.getSouthWest()
       const se = bounds.getSouthEast()
+      
 
       this.map.addSource('some id', {
         type: 'canvas',
@@ -115,7 +119,7 @@ export default {
       //     this.ctx.fillRect(currentPos.x, currentPos.y, 3, 3);
       //   }
       // }
-      // this.ctx.fillStyle = "rgba(255, 255, 255, 1)"
+      // this.ctx.strokeStyle = "rgba(255, 255, 255, 1)"
       particles.forEach((particle) => {
         particle.follow(this.field)
         particle.update()
