@@ -34,8 +34,8 @@ export default {
   mounted () {
     this.canvas = document.createElement('canvas')
     this.ctx = this.canvas.getContext('2d')
-    this.width = this.canvas.width = window.innerWidth
-    this.height = this.canvas.height = window.innerHeight
+    this.width = this.canvas.width = window.innerWidth * 2
+    this.height = this.canvas.height = window.innerHeight * 2
     this.setColRows(this.scale, this.width, this.height)
     this.createParticles()
     this.generateField(0)
